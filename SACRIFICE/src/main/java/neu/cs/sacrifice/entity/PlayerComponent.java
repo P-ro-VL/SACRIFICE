@@ -1,7 +1,6 @@
 package neu.cs.sacrifice.entity;
 
-import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.entity.action.Action;
+import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
@@ -12,24 +11,25 @@ import neu.cs.sacrifice.SACRIFICE;
 import neu.cs.sacrifice.api.entity.ActionType;
 import neu.cs.sacrifice.api.entity.Direction;
 import neu.cs.sacrifice.api.entity.Player;
+import neu.cs.sacrifice.api.scene.GameScene;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
-
 public class PlayerComponent extends Component implements Player {
 
     private Map<ActionType, AnimationChannel> animationChannelMap = new HashMap<>();
     private PhysicsComponent physicsComponent;
     private AnimatedTexture animatedTexture;
 
+    private GameScene scene;
+
     public PlayerComponent() {
         Image image = new Image("/assets/textures/player.png");
 
         animationChannelMap.put(ActionType.IDLE, new AnimationChannel(image,
-                4, 100, 250, Duration.seconds(1), 0, 0));
+                4, PLAYER_WIDTH, PLAYER_HEIGHT, Duration.seconds(1), 0, 0));
         animationChannelMap.put(ActionType.WALKING, new AnimationChannel(image,
-                4, 100, 250, Duration.seconds(1), 1, 3));
+                4, PLAYER_WIDTH, PLAYER_HEIGHT, Duration.seconds(1), 1, 3));
 
         this.animatedTexture = new AnimatedTexture(getAnimationMap().get(ActionType.IDLE));
         this.animatedTexture.loop();
@@ -53,6 +53,26 @@ public class PlayerComponent extends Component implements Player {
     @Override
     public PhysicsComponent getPhysicsBehaviour() {
         return physicsComponent;
+    }
+
+    @Override
+    public Entity toFXGLEntity() {
+        return getEntity();
+    }
+
+    @Override
+    public GameScene getScene() {
+        return scene;
+    }
+
+    @Override
+    public void remove() {
+        this.scene.remove(getEntity());
+    }
+
+    @Override
+    public void setScene(GameScene scene) {
+        this.scene = scene;
     }
 
     @Override

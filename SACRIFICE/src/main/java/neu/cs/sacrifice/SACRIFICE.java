@@ -16,7 +16,9 @@ import neu.cs.sacrifice.entity.PlayerComponent;
 import neu.cs.sacrifice.scene.TestScene;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SACRIFICE extends GameApplication {
 
@@ -25,7 +27,7 @@ public class SACRIFICE extends GameApplication {
     public static Entity player;
     public static Viewport viewport;
 
-    private List<GameScene> gameScenes = new ArrayList<>();
+    private Map<String, GameScene> gameScenes = new HashMap<>();
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
@@ -70,7 +72,7 @@ public class SACRIFICE extends GameApplication {
 
     @Override
     protected void onPreInit() {
-        gameScenes.add(new TestScene());
+        registerGameScene(new TestScene());
     }
 
     @Override
@@ -84,9 +86,11 @@ public class SACRIFICE extends GameApplication {
         viewport.bindToEntity(player, FXGL.getAppWidth() / 2.0, FXGL.getAppHeight() / 2.0);
         viewport.setLazy(true);
 
-        for (GameScene gameScene : gameScenes) {
-            gameScene.initScene();
-        }
+        gameScenes.get("test").initScene();
+    }
+
+    public void registerGameScene(GameScene gameScene) {
+        this.gameScenes.put(gameScene.getSceneID(), gameScene);
     }
 
     public static void main(String[] args) {

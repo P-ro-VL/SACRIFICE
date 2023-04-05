@@ -17,6 +17,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import neu.cs.sacrifice.SACRIFICE;
 import neu.cs.sacrifice.api.entity.EntityType;
+import neu.cs.sacrifice.api.entity.Player;
 
 public class EntityBuilder implements EntityFactory {
 
@@ -28,7 +29,7 @@ public class EntityBuilder implements EntityFactory {
 
         return FXGL.entityBuilder(data)
                 .type(EntityType.PLAYER)
-                .bbox(new HitBox(new Point2D(50, 50), BoundingShape.box(100, 250)))
+                .bbox(new HitBox(new Point2D(50, 50), BoundingShape.box(Player.PLAYER_WIDTH, Player.PLAYER_HEIGHT)))
                 .with(new CollidableComponent(true))
                 .with(new IrremovableComponent())
                 .with(physics)
