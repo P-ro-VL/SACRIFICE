@@ -5,12 +5,14 @@ import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
 import neu.cs.sacrifice.SACRIFICE;
 import neu.cs.sacrifice.api.entity.ActionType;
 import neu.cs.sacrifice.api.entity.Direction;
 import neu.cs.sacrifice.api.entity.Player;
+import neu.cs.sacrifice.api.event.type.PlayerMoveEvent;
 import neu.cs.sacrifice.api.scene.GameScene;
 
 import java.util.HashMap;
@@ -87,6 +89,14 @@ public class PlayerComponent extends Component implements Player {
 
     @Override
     public void move(Direction direction) {
+        Point2D pos = getEntity().getPosition();
+        Point2D toOrigin = new Point2D(pos.getX(), pos.getY());
+        toOrigin.add(new Point2D((direction == Direction.LEFT ? -170 : 170)*2, getPhysicsBehaviour().getVelocityY()));
+        PlayerMoveEvent moveEvent = new PlayerMoveEvent(this, getEntity().getPosition(), toOrigin,direction);
+        SACRIFICE.getInstance().getEventManagingService().callEvent(moveEvent);
+
+        if(moveEvent.isCancelled()) return;
+
         switch (direction) {
             case LEFT -> {
                 getEntity().setScaleX(-1);

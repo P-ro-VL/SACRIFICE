@@ -11,6 +11,8 @@ import neu.cs.sacrifice.SACRIFICE;
 import neu.cs.sacrifice.api.entity.Entity;
 import neu.cs.sacrifice.api.event.type.PostGameSceneChangeEvent;
 import neu.cs.sacrifice.api.event.type.PreGameSceneChangeEvent;
+import neu.cs.sacrifice.api.object.GameObject;
+import neu.cs.sacrifice.api.object.IGameObject;
 import neu.cs.sacrifice.api.utils.Loggers;
 
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public abstract class GameScene {
     private Point2D spawnPoint;
 
     private List<Entity> entities = new ArrayList<>();
+    private List<GameObject> gameObjects = new ArrayList<>();
 
     public GameScene(String ID) {
         this.sceneID = ID;
@@ -75,6 +78,25 @@ public abstract class GameScene {
     public void remove(Entity entity) {
         this.entities.remove(entity);
         FXGL.getGameWorld().removeEntity(entity.toFXGLEntity());
+    }
+
+    public void remove(GameObject gameObject){
+        this.gameObjects.remove(gameObject);
+        FXGL.getGameWorld().removeEntity(gameObject.getEntity());
+    }
+
+    public List<GameObject> getGameObjects() {
+        return gameObjects;
+    }
+
+    public void addObject(GameObject gameObject, double x, double y){
+        this.gameObjects.add(gameObject);
+        com.almasb.fxgl.entity.Entity object = FXGL.entityBuilder()
+                .with(gameObject)
+                .view(gameObject.getTexture())
+                .at(x,y)
+                .buildAndAttach();
+        FXGL.getGameWorld().addEntity(object);
     }
 
     public final void initScene() {

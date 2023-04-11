@@ -14,6 +14,8 @@ public interface IGameObject {
 
     public double getY();
 
+    public boolean hasGravity();
+
     public void setCollidable(boolean isCollidable);
 
     public void setTexture(Texture texture);
@@ -24,4 +26,7 @@ public interface IGameObject {
 
     public void setY(double y);
 
+    public void setGravity(boolean gravity);
+
+    public void onInteract(InteractType interactType);
 }

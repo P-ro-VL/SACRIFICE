@@ -11,6 +11,7 @@ import com.almasb.fxgl.input.virtual.VirtualButton;
 import javafx.scene.input.KeyCode;
 import neu.cs.sacrifice.api.entity.Direction;
 import neu.cs.sacrifice.api.event.EventManagingService;
+import neu.cs.sacrifice.api.plugin.PluginManager;
 import neu.cs.sacrifice.api.scene.GameScene;
 import neu.cs.sacrifice.entity.EntityBuilder;
 import neu.cs.sacrifice.entity.PlayerComponent;
@@ -18,6 +19,7 @@ import neu.cs.sacrifice.scene.TestMoi;
 import neu.cs.sacrifice.scene.TestScene;
 import neu.cs.sacrifice.scene.TestScene2;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,15 +38,13 @@ public class SACRIFICE extends GameApplication {
 
     private EventManagingService eventManagingService;
 
+    private PluginManager pluginManager;
+
     @Override
     protected void onPreInit() {
         instance = this;
         this.eventManagingService = new EventManagingService();
-
-        registerAllListeners();
-
-        registerGameScene(new TestScene());
-        registerGameScene(new TestScene2());
+        this.pluginManager = new PluginManager();
     }
 
     @Override
@@ -113,9 +113,8 @@ public class SACRIFICE extends GameApplication {
         viewport.bindToEntity(player, FXGL.getAppWidth() / 2.0, FXGL.getAppHeight() / 2.0);
         viewport.setLazy(true);
 
-        setGameScenes(gameScenes.get("test"));
+        getPluginManager().loadAllPlugins();
     }
-
 
     public static void main(String[] args) {
         launch(args);
@@ -150,13 +149,14 @@ public class SACRIFICE extends GameApplication {
         return eventManagingService;
     }
 
+    public PluginManager getPluginManager() {
+        return pluginManager;
+    }
+
     public static SACRIFICE getInstance() {
         return instance;
     }
 
     //////////////////////////////////////////////////
 
-    private void registerAllListeners() {
-        getEventManagingService().registerListener(new TestMoi());
-    }
 }

@@ -9,7 +9,8 @@ open module neu.cs.sacrifice {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires com.almasb.fxgl.all;
-
+    requires org.yaml.snakeyaml;
     requires com.google.common;
     requires junit;
+    requires annotations;
 }

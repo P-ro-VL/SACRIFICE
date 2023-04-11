@@ -1,12 +1,21 @@
 package neu.cs.sacrifice.api.object;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.Texture;
 
 public class GameObject extends Component implements IGameObject {
     private String ID;
-    private boolean isCollidable;
+    private boolean isCollidable = true;
     private Texture texture;
+    private boolean gravity;
+
+    public GameObject(String ID, String textureName){
+        this.ID = ID;
+        this.texture = new Texture(FXGL.getAssetLoader().loadImage("plant.png"));
+
+        System.out.println(texture.getImage());
+    }
 
     @Override
     public String getID() {
@@ -34,6 +43,11 @@ public class GameObject extends Component implements IGameObject {
     }
 
     @Override
+    public boolean hasGravity() {
+        return gravity;
+    }
+
+    @Override
     public void setCollidable(boolean isCollidable) {
         this.isCollidable = isCollidable;
     }
@@ -56,5 +70,15 @@ public class GameObject extends Component implements IGameObject {
     @Override
     public void setY(double y) {
         this.entity.setY(y);
+    }
+
+    @Override
+    public void setGravity(boolean gravity) {
+        this.gravity = gravity;
+    }
+
+    @Override
+    public void onInteract(InteractType interactType) {
+
     }
 }
