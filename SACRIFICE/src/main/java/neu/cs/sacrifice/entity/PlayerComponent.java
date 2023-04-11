@@ -67,7 +67,7 @@ public class PlayerComponent extends Component implements Player {
 
     @Override
     public void remove() {
-        this.scene.remove(getEntity());
+        this.scene.remove(this);
     }
 
     @Override

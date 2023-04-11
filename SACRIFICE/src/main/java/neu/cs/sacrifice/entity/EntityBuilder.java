@@ -48,4 +48,9 @@ public class EntityBuilder implements EntityFactory {
                 .build();
     }
 
+    @Spawns("door")
+    public Entity spawnDoor(SpawnData data){
+        return FXGL.entityBuilder(data).at(3000, 100).view("plant.png").build();
+    }
+
 }

@@ -10,24 +10,42 @@ import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.input.virtual.VirtualButton;
 import javafx.scene.input.KeyCode;
 import neu.cs.sacrifice.api.entity.Direction;
+import neu.cs.sacrifice.api.event.EventManagingService;
 import neu.cs.sacrifice.api.scene.GameScene;
 import neu.cs.sacrifice.entity.EntityBuilder;
 import neu.cs.sacrifice.entity.PlayerComponent;
+import neu.cs.sacrifice.scene.TestMoi;
 import neu.cs.sacrifice.scene.TestScene;
+import neu.cs.sacrifice.scene.TestScene2;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class SACRIFICE extends GameApplication {
 
     public static final int WINDOW_WIDTH = 1280, WINDOW_HEIGHT = 756;
 
-    public static Entity player;
-    public static Viewport viewport;
+    private static SACRIFICE instance;
+
+    private Entity player;
+
+    private Viewport viewport;
 
     private Map<String, GameScene> gameScenes = new HashMap<>();
+    private GameScene currentGameScene;
+
+    private EventManagingService eventManagingService;
+
+    @Override
+    protected void onPreInit() {
+        instance = this;
+        this.eventManagingService = new EventManagingService();
+
+        registerAllListeners();
+
+        registerGameScene(new TestScene());
+        registerGameScene(new TestScene2());
+    }
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
@@ -63,16 +81,25 @@ public class SACRIFICE extends GameApplication {
                 player.getComponent(PlayerComponent.class).stopMoving();
             }
         }, KeyCode.D, VirtualButton.RIGHT);
+
+        FXGL.getInput().addAction(new UserAction("use") {
+            @Override
+            protected void onActionBegin() {
+                currentGameScene.switchScene(gameScenes.get("hihi"));
+                FXGL.getNotificationService().pushNotification("Đã chuyển cảnh"
+                );
+            }
+
+            @Override
+            protected void onActionEnd() {
+                super.onActionEnd();
+            }
+        }, KeyCode.X, VirtualButton.X);
     }
 
     @Override
     protected void initPhysics() {
         FXGL.getPhysicsWorld().setGravity(0, WINDOW_HEIGHT);
-    }
-
-    @Override
-    protected void onPreInit() {
-        registerGameScene(new TestScene());
     }
 
     @Override
@@ -86,14 +113,50 @@ public class SACRIFICE extends GameApplication {
         viewport.bindToEntity(player, FXGL.getAppWidth() / 2.0, FXGL.getAppHeight() / 2.0);
         viewport.setLazy(true);
 
-        gameScenes.get("test").initScene();
+        setGameScenes(gameScenes.get("test"));
     }
 
-    public void registerGameScene(GameScene gameScene) {
-        this.gameScenes.put(gameScene.getSceneID(), gameScene);
-    }
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public Entity getPlayer() {
+        return player;
+    }
+
+    public Viewport getViewport() {
+        return viewport;
+    }
+
+    public Map<String, GameScene> getAllScenes() {
+        return this.gameScenes;
+    }
+
+    public GameScene getCurrentGameScene() {
+        return currentGameScene;
+    }
+
+    public void setGameScenes(GameScene gameScene) {
+        currentGameScene = gameScene;
+        gameScene.initScene();
+    }
+
+    public void registerGameScene(GameScene gameScene) {
+        gameScenes.put(gameScene.getSceneID(), gameScene);
+    }
+
+    public EventManagingService getEventManagingService() {
+        return eventManagingService;
+    }
+
+    public static SACRIFICE getInstance() {
+        return instance;
+    }
+
+    //////////////////////////////////////////////////
+
+    private void registerAllListeners() {
+        getEventManagingService().registerListener(new TestMoi());
     }
 }

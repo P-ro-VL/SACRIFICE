@@ -1,6 +1,5 @@
 package neu.cs.sacrifice.scene;
 
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.EntityFactory;
 import neu.cs.sacrifice.api.scene.GameScene;
 
