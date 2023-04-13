@@ -10,7 +10,7 @@ public class PluginDescriptionFile {
 
     private String pluginName;
     private String pluginVersion;
-    private String[] authors;
+    private String authors;
     private String mainClass;
 
     public String getPluginName() {
@@ -21,7 +21,7 @@ public class PluginDescriptionFile {
         return pluginVersion;
     }
 
-    public String[] getAuthors() {
+    public String getAuthors() {
         return authors;
     }
 
@@ -42,7 +42,7 @@ public class PluginDescriptionFile {
 
         this.pluginName = (String) map.get("name");
         this.pluginVersion = (String) map.get("version");
-        this.authors = (String[]) map.get("author");
+        this.authors = (String) map.get("author");
         this.mainClass = (String) map.get("main");
     }
 

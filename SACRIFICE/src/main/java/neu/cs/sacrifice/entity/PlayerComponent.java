@@ -1,5 +1,6 @@
 package neu.cs.sacrifice.entity;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
@@ -11,12 +12,18 @@ import javafx.util.Duration;
 import neu.cs.sacrifice.SACRIFICE;
 import neu.cs.sacrifice.api.entity.ActionType;
 import neu.cs.sacrifice.api.entity.Direction;
+import neu.cs.sacrifice.api.entity.EntityType;
 import neu.cs.sacrifice.api.entity.Player;
+import neu.cs.sacrifice.api.event.type.PlayerInteractGameObjectEvent;
 import neu.cs.sacrifice.api.event.type.PlayerMoveEvent;
+import neu.cs.sacrifice.api.object.GameObject;
+import neu.cs.sacrifice.api.object.InteractType;
 import neu.cs.sacrifice.api.scene.GameScene;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
 public class PlayerComponent extends Component implements Player {
 
     private Map<ActionType, AnimationChannel> animationChannelMap = new HashMap<>();
@@ -91,11 +98,11 @@ public class PlayerComponent extends Component implements Player {
     public void move(Direction direction) {
         Point2D pos = getEntity().getPosition();
         Point2D toOrigin = new Point2D(pos.getX(), pos.getY());
-        toOrigin.add(new Point2D((direction == Direction.LEFT ? -170 : 170)*2, getPhysicsBehaviour().getVelocityY()));
-        PlayerMoveEvent moveEvent = new PlayerMoveEvent(this, getEntity().getPosition(), toOrigin,direction);
+        toOrigin.add(new Point2D((direction == Direction.LEFT ? -170 : 170) * 2, getPhysicsBehaviour().getVelocityY()));
+        PlayerMoveEvent moveEvent = new PlayerMoveEvent(this, getEntity().getPosition(), toOrigin, direction);
         SACRIFICE.getInstance().getEventManagingService().callEvent(moveEvent);
 
-        if(moveEvent.isCancelled()) return;
+        if (moveEvent.isCancelled()) return;
 
         switch (direction) {
             case LEFT -> {

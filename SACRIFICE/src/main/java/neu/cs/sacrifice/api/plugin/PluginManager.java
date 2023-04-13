@@ -1,6 +1,7 @@
 package neu.cs.sacrifice.api.plugin;
 
 import com.google.common.collect.Maps;
+import javafx.scene.control.Alert;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +19,7 @@ public class PluginManager {
     }
 
     public void loadAllPlugins() {
-        File directory = new File("/plugins");
+        File directory = new File("plugins");
         if (directory.listFiles() == null) return;
         for (File file : Objects.requireNonNull(directory.listFiles())) {
             if (file.isDirectory() || !file.getName().endsWith(".jar")) continue;

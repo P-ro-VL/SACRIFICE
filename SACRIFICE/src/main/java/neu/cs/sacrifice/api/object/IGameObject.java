@@ -1,6 +1,7 @@
 package neu.cs.sacrifice.api.object;
 
 import com.almasb.fxgl.texture.Texture;
+import javafx.util.Duration;
 
 public interface IGameObject {
 
@@ -16,6 +17,12 @@ public interface IGameObject {
 
     public boolean hasGravity();
 
+    public Duration getLivingTime();
+
+    public double getWidth();
+
+    public double getHeight();
+
     public void setCollidable(boolean isCollidable);
 
     public void setTexture(Texture texture);
@@ -28,5 +35,8 @@ public interface IGameObject {
 
     public void setGravity(boolean gravity);
 
+    public void setLivingTime(Duration livingTime);
+
     public void onInteract(InteractType interactType);
+
 }

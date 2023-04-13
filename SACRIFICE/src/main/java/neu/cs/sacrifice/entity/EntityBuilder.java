@@ -29,7 +29,7 @@ public class EntityBuilder implements EntityFactory {
 
         return FXGL.entityBuilder(data)
                 .type(EntityType.PLAYER)
-                .bbox(new HitBox(new Point2D(50, 50), BoundingShape.box(Player.PLAYER_WIDTH, Player.PLAYER_HEIGHT)))
+                .bbox(new HitBox(new Point2D(0,0), BoundingShape.box(Player.PLAYER_WIDTH, Player.PLAYER_HEIGHT)))
                 .with(new CollidableComponent(true))
                 .with(new IrremovableComponent())
                 .with(physics)

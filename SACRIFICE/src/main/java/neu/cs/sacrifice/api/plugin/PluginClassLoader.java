@@ -1,5 +1,6 @@
 package neu.cs.sacrifice.api.plugin;
 
+import javafx.scene.control.Alert;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.Assert;
@@ -56,6 +57,9 @@ public class PluginClassLoader extends URLClassLoader{
 
             this.plugin = (SacrificePlugin) pluginClass.newInstance();
             this.plugin.setPluginDescriptionFile(description);
+
+            this.plugin.onEnable();
+
         } catch (IllegalAccessException var13) {
             throw new UnknownError("No public constructor");
         } catch (InstantiationException var14) {

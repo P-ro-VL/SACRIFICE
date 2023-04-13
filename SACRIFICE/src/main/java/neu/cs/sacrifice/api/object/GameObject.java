@@ -3,6 +3,8 @@ package neu.cs.sacrifice.api.object;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.Texture;
+import javafx.util.Duration;
+import neu.cs.sacrifice.api.utils.TextureLoader;
 
 public class GameObject extends Component implements IGameObject {
     private String ID;
@@ -10,9 +12,11 @@ public class GameObject extends Component implements IGameObject {
     private Texture texture;
     private boolean gravity;
 
+    private Duration livingTime = null;
+
     public GameObject(String ID, String textureName){
         this.ID = ID;
-        this.texture = new Texture(FXGL.getAssetLoader().loadImage("plant.png"));
+        this.texture = TextureLoader.loadTexture(textureName);
 
         System.out.println(texture.getImage());
     }
@@ -48,6 +52,21 @@ public class GameObject extends Component implements IGameObject {
     }
 
     @Override
+    public Duration getLivingTime() {
+        return livingTime;
+    }
+
+    @Override
+    public double getWidth() {
+        return getTexture().getWidth();
+    }
+
+    @Override
+    public double getHeight() {
+        return getTexture().getHeight();
+    }
+
+    @Override
     public void setCollidable(boolean isCollidable) {
         this.isCollidable = isCollidable;
     }
@@ -78,7 +97,13 @@ public class GameObject extends Component implements IGameObject {
     }
 
     @Override
+    public void setLivingTime(Duration livingTime) {
+        this.livingTime = livingTime;
+    }
+
+    @Override
     public void onInteract(InteractType interactType) {
 
     }
+
 }
