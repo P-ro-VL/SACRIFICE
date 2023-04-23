@@ -1,24 +1,17 @@
-package neu.cs.sacrifice.entity;
+package neu.cs.sacrifice.entity.player;
 
-import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.component.Component;
-import com.almasb.fxgl.physics.PhysicsComponent;
-import com.almasb.fxgl.texture.AnimatedTexture;
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
 import neu.cs.sacrifice.SACRIFICE;
 import neu.cs.sacrifice.api.entity.AbstractEntity;
 import neu.cs.sacrifice.api.entity.ActionType;
-import neu.cs.sacrifice.api.entity.Direction;
 import neu.cs.sacrifice.api.entity.Player;
-import neu.cs.sacrifice.api.scene.GameScene;
-import neu.cs.sacrifice.api.utils.TextureLoader;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class PlayerComponent extends AbstractEntity implements Player {
+
+    private PlayerInventory inventory;
 
     public PlayerComponent() {
         super("player");
@@ -28,6 +21,8 @@ public class PlayerComponent extends AbstractEntity implements Player {
                 4, PLAYER_WIDTH, PLAYER_HEIGHT, Duration.seconds(1), 0, 0), true);
         addAnimation(ActionType.WALKING, new AnimationChannel(image,
                 4, PLAYER_WIDTH, PLAYER_HEIGHT, Duration.seconds(1), 1, 3), false);
+
+        this.inventory = new PlayerInventory();
     }
 
     @Override
@@ -38,6 +33,32 @@ public class PlayerComponent extends AbstractEntity implements Player {
         } else {
             getTexture().loopAnimationChannel(getAnimationMap().get(ActionType.IDLE));
         }
+
+        getInventory().updateInventory();
     }
 
+    @Override
+    public void sendMessage(String message) {
+
+    }
+
+    @Override
+    public void sendTitle(String title) {
+
+    }
+
+    @Override
+    public void sendNotification(String notificationMessage) {
+
+    }
+
+    @Override
+    public void sendActionBar(String message) {
+
+    }
+
+    @Override
+    public PlayerInventory getInventory() {
+        return inventory;
+    }
 }

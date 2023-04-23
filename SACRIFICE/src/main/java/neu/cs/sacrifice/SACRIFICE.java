@@ -1,7 +1,6 @@
 package neu.cs.sacrifice;
 
 import com.almasb.fxgl.app.ApplicationMode;
-import com.almasb.fxgl.app.FXGLApplication;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.Viewport;
@@ -9,15 +8,13 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.input.virtual.VirtualButton;
-import com.almasb.fxgl.logging.Logger;
-import com.almasb.fxgl.logging.LoggerOutput;
 import com.almasb.fxgl.physics.CollisionHandler;
-import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
 import neu.cs.sacrifice.api.entity.Direction;
 import neu.cs.sacrifice.api.entity.EntityType;
 import neu.cs.sacrifice.api.entity.Player;
+import neu.cs.sacrifice.api.entity.inventory.ItemStack;
+import neu.cs.sacrifice.api.entity.inventory.StandardItemMeta;
 import neu.cs.sacrifice.api.event.EventManagingService;
 import neu.cs.sacrifice.api.event.type.PlayerInteractGameObjectEvent;
 import neu.cs.sacrifice.api.object.GameObject;
@@ -25,16 +22,12 @@ import neu.cs.sacrifice.api.object.InteractType;
 import neu.cs.sacrifice.api.plugin.PluginManager;
 import neu.cs.sacrifice.api.scene.GameScene;
 import neu.cs.sacrifice.entity.EntityBuilder;
-import neu.cs.sacrifice.entity.PlayerComponent;
+import neu.cs.sacrifice.entity.player.PlayerComponent;
 import neu.cs.sacrifice.scene.TestMoi;
-import neu.cs.sacrifice.scene.TestScene;
-import neu.cs.sacrifice.scene.TestScene2;
 import org.junit.Assert;
+import org.junit.Test;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class SACRIFICE extends GameApplication {
@@ -58,6 +51,7 @@ public class SACRIFICE extends GameApplication {
     protected void onPreInit() {
         instance = this;
         this.eventManagingService = new EventManagingService();
+        this.eventManagingService.registerListener(new TestMoi());
         this.pluginManager = new PluginManager();
     }
 
@@ -173,9 +167,19 @@ public class SACRIFICE extends GameApplication {
         FXGL.getInput().addAction(new UserAction("use") {
             @Override
             protected void onActionBegin() {
-                currentGameScene.switchScene(gameScenes.get("hihi"));
-                FXGL.getNotificationService().pushNotification("Đã chuyển cảnh"
-                );
+                ItemStack item = new ItemStack("key.png")
+                        .setItemMeta(new StandardItemMeta().setDisplayName("Chìa khóa").setLore("Dùng để mở cửa"));
+                ItemStack item2 = new ItemStack("amulet.png")
+                        .setItemMeta(new StandardItemMeta().setDisplayName("Bùa trấn trạch").setLore("Dùng để ngăn không cho ma quỷ vào nhà"));
+                ItemStack item3 = new ItemStack("mantra.png")
+                        .setItemMeta(new StandardItemMeta().setDisplayName("Kinh A Di Đà").setLore("Bộ kinh thường dùng để siêu độ các linh hồn..."));
+                ItemStack item4 = new ItemStack("incenses.png")
+                        .setItemMeta(new StandardItemMeta().setDisplayName("Bó hương").setLore("Còn đang tỏa khói nghi ngút"));
+
+                getPlayer().getInventory().addItem(item);
+                getPlayer().getInventory().addItem(item2);
+                getPlayer().getInventory().addItem(item3);
+                getPlayer().getInventory().addItem(item4);
             }
 
             @Override

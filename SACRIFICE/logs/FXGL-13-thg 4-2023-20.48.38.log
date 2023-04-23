@@ -95,7 +95,7 @@ java.lang.RuntimeException: Initialization failed
 Caused by: java.lang.NullPointerException: Cannot invoke "com.almasb.fxgl.texture.AnimatedTexture.loopAnimationChannel(com.almasb.fxgl.texture.AnimationChannel)" because the return value of "neu.cs.sacrifice.api.entity.AbstractEntity.getTexture()" is null
 	at neu.cs.sacrifice/neu.cs.sacrifice.api.entity.AbstractEntity.setCurrentAction(AbstractEntity.java:122)
 	at neu.cs.sacrifice/neu.cs.sacrifice.api.entity.AbstractEntity.addAnimation(AbstractEntity.java:48)
-	at neu.cs.sacrifice/neu.cs.sacrifice.entity.PlayerComponent.<init>(PlayerComponent.java:26)
+	at neu.cs.sacrifice/neu.cs.sacrifice.entity.player.PlayerComponent.<init>(PlayerComponent.java:26)
 	at neu.cs.sacrifice/neu.cs.sacrifice.entity.EntityBuilder.spawnPlayer(EntityBuilder.java:35)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)

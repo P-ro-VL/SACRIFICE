@@ -18,6 +18,7 @@ import javafx.scene.image.Image;
 import neu.cs.sacrifice.SACRIFICE;
 import neu.cs.sacrifice.api.entity.EntityType;
 import neu.cs.sacrifice.api.entity.Player;
+import neu.cs.sacrifice.entity.player.PlayerComponent;
 
 public class EntityBuilder implements EntityFactory {
 

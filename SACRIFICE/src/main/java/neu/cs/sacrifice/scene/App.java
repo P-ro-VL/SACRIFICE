@@ -1,22 +1,17 @@
 package neu.cs.sacrifice.scene;
 
+import neu.cs.sacrifice.api.utils.DoubleRange;
+
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class App {
 
     public static void main(String[] args) {
-        for (int i = 0; i < 1000; i++) {
-            BigInteger a = BigInteger.valueOf(4).pow(i);
-            BigInteger b = BigInteger.valueOf(3).pow(i);
-            BigInteger tuSo = a.add(b);
-
-            BigInteger c = BigInteger.valueOf(7);
-            BigInteger d = BigInteger.valueOf(4).pow(i+1);
-            BigInteger mauSo = c.subtract(d);
-
-            BigInteger result = tuSo.divide(mauSo);
-            System.out.println(result.toString());
-        }
+        DoubleRange range = DoubleRange.of(3.0, 5.5);
+        System.out.println(range.toList(0.5));
     }
 
 }

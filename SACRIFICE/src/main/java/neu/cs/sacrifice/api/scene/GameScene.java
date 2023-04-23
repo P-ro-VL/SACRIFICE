@@ -22,6 +22,8 @@ import neu.cs.sacrifice.api.event.type.PreGameSceneChangeEvent;
 import neu.cs.sacrifice.api.object.GameObject;
 import neu.cs.sacrifice.api.object.IGameObject;
 import neu.cs.sacrifice.api.object.InteractType;
+import neu.cs.sacrifice.api.utils.DoubleRange;
+import neu.cs.sacrifice.api.utils.IntRange;
 import neu.cs.sacrifice.api.utils.Loggers;
 
 import java.io.File;
@@ -29,7 +31,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class GameScene {
 
@@ -80,6 +84,24 @@ public abstract class GameScene {
         return entities;
     }
 
+    /**
+     * Return the entity found under the given mouse position.<br>
+     * This method is different from {@link FXGL#getGameWorld().getEntityAt(Point2D) getGameWorld().getEntityAt(Point2D)} (1).
+     * (1) is expected to return an entity at right exact given position, but this method will return the first
+     * entity found under the mouse position (World Position).
+     */
+    public Optional<Entity> getEntityAt(Point2D mousePosition) {
+        for (Entity entity : getEntities()) {
+            com.almasb.fxgl.entity.Entity FXGLEntity = entity.toFXGLEntity();
+            double width = FXGLEntity.getWidth(), height = FXGLEntity.getHeight();
+            DoubleRange boundX = DoubleRange.of(entity.getX(), entity.getX() + width),
+                    boundY = DoubleRange.of(entity.getY(), entity.getY() + height);
+            if (boundX.isInRange(mousePosition.getX()) && boundY.isInRange(mousePosition.getY()))
+                return Optional.of(entity);
+        }
+        return Optional.empty();
+    }
+
     public void addEntity(String entityName, int x, int y) {
         FXGL.getGameWorld().spawn(entityName, x, y);
     }
@@ -97,7 +119,7 @@ public abstract class GameScene {
         FXGL.getGameWorld().removeEntity(entity.toFXGLEntity());
     }
 
-    public void remove(GameObject gameObject){
+    public void remove(GameObject gameObject) {
         this.gameObjects.remove(gameObject);
         FXGL.getGameWorld().removeEntity(gameObject.getEntity());
     }
@@ -106,7 +128,18 @@ public abstract class GameScene {
         return gameObjects;
     }
 
-    public void addObject(GameObject gameObject, double x, double y){
+    public Optional<GameObject> getGameObjectAt(Point2D mousePosition){
+        for (GameObject gameObject : getGameObjects()) {
+            double width = gameObject.getWidth(), height = gameObject.getHeight();
+            DoubleRange boundX = DoubleRange.of(gameObject.getX(), gameObject.getX() + width),
+                    boundY = DoubleRange.of(gameObject.getY(), gameObject.getY() + height);
+            if (boundX.isInRange(mousePosition.getX()) && boundY.isInRange(mousePosition.getY()))
+                return Optional.of(gameObject);
+        }
+        return Optional.empty();
+    }
+
+    public void addObject(GameObject gameObject, double x, double y) {
         this.gameObjects.add(gameObject);
         EntityBuilder builder = FXGL.entityBuilder()
                 .type(EntityType.GAME_OBJECT)
@@ -118,14 +151,14 @@ public abstract class GameScene {
                             ((Player) SACRIFICE.getInstance().getPlayer(), gameObject, InteractType.MOUSE_CLICK);
                     SACRIFICE.getInstance().getEventManagingService().callEvent(playerInteractGameObjectEvent);
 
-                    if(playerInteractGameObjectEvent.isCancelled()) return;
+                    if (playerInteractGameObjectEvent.isCancelled()) return;
                     gameObject.onInteract(InteractType.MOUSE_CLICK);
                 })
-                .at(x,y);
-        if(gameObject.getLivingTime() != null){
+                .at(x, y);
+        if (gameObject.getLivingTime() != null) {
             builder.with(new ExpireCleanComponent(gameObject.getLivingTime()).animateOpacity());
         }
-        if(gameObject.isCollidable()){
+        if (gameObject.isCollidable()) {
             builder.with(new CollidableComponent(true));
         }
         com.almasb.fxgl.entity.Entity entity = builder.build();
