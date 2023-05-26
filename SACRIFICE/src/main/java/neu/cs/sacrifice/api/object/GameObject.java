@@ -1,10 +1,9 @@
 package neu.cs.sacrifice.api.object;
 
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.Texture;
 import javafx.util.Duration;
-import neu.cs.sacrifice.api.utils.TextureLoader;
+import neu.cs.sacrifice.api.utils.assets_loader.TextureLoader;
 
 public class GameObject extends Component implements IGameObject {
     private String ID;

@@ -1,4 +1,4 @@
-package neu.cs.sacrifice.api.utils;
+package neu.cs.sacrifice.api.utils.assets_loader;
 
 import com.almasb.fxgl.texture.Texture;
 import javafx.scene.image.Image;

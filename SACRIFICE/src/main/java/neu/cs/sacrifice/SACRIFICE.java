@@ -24,6 +24,7 @@ import neu.cs.sacrifice.api.scene.GameScene;
 import neu.cs.sacrifice.entity.EntityBuilder;
 import neu.cs.sacrifice.entity.player.PlayerComponent;
 import neu.cs.sacrifice.scene.TestMoi;
+import neu.cs.sacrifice.screen.ScreenFactory;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -62,6 +63,12 @@ public class SACRIFICE extends GameApplication {
 
         gameSettings.setTitle("SACRIFICE");
         gameSettings.setApplicationMode(ApplicationMode.DEVELOPER);
+
+        gameSettings.setMainMenuEnabled(true);
+        gameSettings.setSceneFactory(new ScreenFactory());
+
+        //gameSettings.setFullScreenAllowed(true);
+        //gameSettings.setFullScreenFromStart(true);
     }
 
     @Override

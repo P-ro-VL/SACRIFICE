@@ -1,5 +1,6 @@
 package neu.cs.sacrifice.api.entity;
 
+import neu.cs.sacrifice.api.entity.inventory.Inventory;
 import neu.cs.sacrifice.entity.player.PlayerInventory;
 
 public interface Player extends Entity {

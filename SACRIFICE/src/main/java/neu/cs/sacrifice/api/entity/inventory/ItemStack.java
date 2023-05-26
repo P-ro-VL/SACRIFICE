@@ -1,7 +1,7 @@
 package neu.cs.sacrifice.api.entity.inventory;
 
 import com.almasb.fxgl.texture.Texture;
-import neu.cs.sacrifice.api.utils.TextureLoader;
+import neu.cs.sacrifice.api.utils.assets_loader.TextureLoader;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
