@@ -3,6 +3,7 @@ package neu.cs.sacrifice.screen;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
 
+import com.almasb.fxgl.audio.Audio;
 import javafx.animation.FadeTransition;
 import javafx.scene.Cursor;
 import javafx.scene.effect.Glow;
@@ -18,8 +19,10 @@ import javafx.util.Duration;
 
 import neu.cs.sacrifice.SACRIFICE;
 import neu.cs.sacrifice.api.utils.assets_loader.FontLoader;
+import neu.cs.sacrifice.api.utils.assets_loader.SoundPlayer;
 import neu.cs.sacrifice.api.utils.assets_loader.TextureLoader;
 
+import javax.sound.sampled.Clip;
 import java.io.File;
 
 public class MainMenu extends FXGLMenu {
@@ -33,24 +36,21 @@ public class MainMenu extends FXGLMenu {
     public void init() {
         StackPane mainMenuPane = new StackPane();
 
-        Media startVideo = new Media(new File("assets/ui/start.mp4").toURI().toString());
+        Clip backgroundAmbience = SoundPlayer.playGlobalSound(SoundPlayer.SOUND_DIR + "main_menu_ambience.wav", 50);
+
+        Media startVideo = new Media(new File("assets/ui/main_menu.mp4").toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer((startVideo));
-        mediaPlayer.setAutoPlay(false);
-        mediaPlayer.seek(Duration.seconds(1));
+        mediaPlayer.setAutoPlay(true);
+        mediaPlayer.setCycleCount(Integer.MAX_VALUE);
 
         MediaView mediaView = new MediaView(mediaPlayer);
         mediaView.setFitWidth(SACRIFICE.WINDOW_WIDTH);
         mediaView.setFitHeight(SACRIFICE.WINDOW_HEIGHT);
 
-        Font gameTitleFont = FontLoader.loadFont("boston_algel_bold.ttf", 130);
-        Text gameTitle = new Text("S A C R I F I C E");
-        gameTitle.setTranslateY(-138 -84);
-        gameTitle.setEffect(new Glow(2.9));
-        gameTitle.setFill(Color.rgb(242,242,242));
-        gameTitle.setFont(gameTitleFont);
-        gameTitle.setOnMouseClicked(e -> fireNewGame());
+        Image gameTitle = TextureLoader.loadImage(TextureLoader.TEXTURE_DIR + "game_title.png");
+        ImageView gameTitleView = new ImageView(gameTitle);
 
-        Font startBtnFont = FontLoader.loadFont("girassol.ttf", 60);
+        Font startBtnFont = FontLoader.loadFont(FontLoader.FONT_DIR + "girassol.ttf", 60);
         Text startBtn = new Text("khai môn");
         startBtn.setTranslateY(287);
         startBtn.setFont(startBtnFont);
@@ -66,16 +66,23 @@ public class MainMenu extends FXGLMenu {
         });
 
         startBtn.setOnMouseClicked((e) -> {
-            start(gameTitle, startBtn, mediaPlayer);
+            Media startMedia = new Media(new File("assets/ui/main_menu_start.mp4").toURI().toString());
+            MediaPlayer startMediaPlayer = new MediaPlayer(startMedia);
+            startMediaPlayer.seek(Duration.seconds(0));
+            startMediaPlayer.setAutoPlay(false);
+
+            mediaView.setMediaPlayer(startMediaPlayer);
+
+            start(backgroundAmbience, gameTitleView, startBtn, startMediaPlayer);
         });
 
-        mainMenuPane.getChildren().addAll(mediaView, gameTitle, startBtn);
+        mainMenuPane.getChildren().addAll(mediaView, gameTitleView, startBtn);
 
         getContentRoot().getChildren().add(mainMenuPane);
     }
 
-    public void start(Text gameTitle, Text startBtn, MediaPlayer mediaPlayer) {
-        FadeTransition gameTitleFade = new FadeTransition(Duration.seconds(1), gameTitle);
+    public void start(Clip backgroundAmbience, ImageView gameTitleView, Text startBtn, MediaPlayer mediaPlayer) {
+        FadeTransition gameTitleFade = new FadeTransition(Duration.seconds(1), gameTitleView);
         gameTitleFade.setFromValue(1.0);
         gameTitleFade.setToValue(0.0);
         gameTitleFade.play();
@@ -86,9 +93,9 @@ public class MainMenu extends FXGLMenu {
         startBtnFade.play();
 
         startBtnFade.setOnFinished(e -> {
-            mediaPlayer.seek(Duration.seconds(0));
-            mediaPlayer.play();
+            backgroundAmbience.stop();
 
+            mediaPlayer.play();
             mediaPlayer.setOnEndOfMedia(this::fireNewGame);
         });
     }

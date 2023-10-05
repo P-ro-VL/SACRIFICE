@@ -14,4 +14,5 @@ open module neu.cs.sacrifice {
     requires com.google.common;
     requires junit;
     requires annotations;
+    requires java.desktop;
 }

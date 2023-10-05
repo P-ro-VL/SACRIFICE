@@ -170,6 +170,8 @@ public abstract class GameScene {
         // Reset the entity factory in case switch between scenes
         FXGL.getGameWorld().addEntity(buildBackground());
         SACRIFICE.getInstance().getViewport().setBounds(0, 0, getBackground().widthProperty().intValue(), SACRIFICE.WINDOW_HEIGHT);
+
+        onStart();
     }
 
     public final void switchScene(GameScene goTo) {
@@ -199,7 +201,6 @@ public abstract class GameScene {
             goTo.initScene();
             SACRIFICE.getInstance().getPlayer().toFXGLEntity().setPosition(100, 100);
 
-            Loggers.info("Switched game scene to " + goTo.getSceneID());
             synchronized (FXGL.getGameWorld().getEntities()) {
                 List<com.almasb.fxgl.entity.Entity> currentEntities = FXGL.getGameWorld().getEntities();
                 for (int i = 0; i < currentEntities.size(); i++)
@@ -208,8 +209,6 @@ public abstract class GameScene {
 
             goTo.initScene();
             SACRIFICE.getInstance().getPlayer().toFXGLEntity().setPosition(100, 100);
-
-            Loggers.info("Switched game scene to " + goTo.getSceneID());
 
             FadeTransition ft = new FadeTransition(Duration.seconds(2), FXGL.getGameScene().getContentRoot());
             ft.setFromValue(0.0);
@@ -230,4 +229,6 @@ public abstract class GameScene {
     }
 
     public abstract EntityFactory getSceneEntityFactory();
+
+    public abstract void onStart();
 }

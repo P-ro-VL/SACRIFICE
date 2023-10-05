@@ -67,8 +67,8 @@ public class SACRIFICE extends GameApplication {
         gameSettings.setMainMenuEnabled(true);
         gameSettings.setSceneFactory(new ScreenFactory());
 
-        //gameSettings.setFullScreenAllowed(true);
-        //gameSettings.setFullScreenFromStart(true);
+        gameSettings.setFullScreenAllowed(true);
+        gameSettings.setFullScreenFromStart(true);
     }
 
     @Override

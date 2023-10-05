@@ -18,7 +18,7 @@ public class TextureLoader {
     public static Image loadImage(String path) {
         FileInputStream fileInputStream = null;
         try {
-            fileInputStream = new FileInputStream(new File(TEXTURE_DIR + path));
+            fileInputStream = new FileInputStream(new File(path));
             return new Image(fileInputStream);
         } catch (IOException e) {
             throw new RuntimeException(e);
